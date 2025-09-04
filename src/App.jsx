@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Navbar from './components/Navbar'
 import Sidebar from './components/Sidebar'
 import { Route, Routes } from 'react-router-dom'
@@ -6,21 +6,28 @@ import Add from './pages/Add'
 import List from './pages/List'
 import Order from './pages/Orders'
 import Login from './components/Login'
+import { ToastContainer, toast } from 'react-toastify'
+export const backendUrl=import.meta.env.VITE_BACKEND_URL
 const App = () => {
-  const [token,setToken]=useState("sdds")
+  const [token,setToken]=useState(localStorage.getItem("token")?localStorage.getItem("token"):"")
+//when u refresh the webpage u would logout so this effect is used to provide the token to the localstorage
+useEffect(()=>{
+  const storedToken = localStorage.setItem("token", token);//when ever the token is generated the token is stored in localstorage
+},[token])
   return (
     <div className='bg-grey-50 min-h-screen'>
+      <ToastContainer/>
    {
-    token===""?<Login/>: <>
-    <Navbar/>
+    token===""?<Login setToken={setToken}/> : <>
+    <Navbar setToken={setToken} />
 <hr />
 <div className='flex w-full'>
   <Sidebar/>
   <div className='w-[70%] mx-auto ml-[max(5vw,25px)] my-8 text-gray-600 text-base '>
 <Routes>
-  <Route path="/add" element={<Add/>}/>
-  <Route path="/list" element={<List/>}/>
-  <Route path="/orders" element={<Order/>}/>
+  <Route path="/add" element={<Add  token={token}/>}/>
+  <Route path="/list" element={<List token={token}/>}/>
+  <Route path="/orders" element={<Order token={token}/>}/>
 </Routes>
   </div>
 </div>

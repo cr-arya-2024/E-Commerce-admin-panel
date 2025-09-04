@@ -1,15 +1,22 @@
 import React, { useState } from 'react'
-
-const Login = () => {
+import axios from 'axios'
+import { backendUrl } from '../App'
+import { toast } from 'react-toastify'
+const Login = ({setToken}) => {
     const [email,setEmail]=useState('')
     const [password,setPassword]=useState('')
     const onSubmitHandler=async(e)=>{
 try {
     e.preventDefault()
-console.log(password,email);
+const res=await axios.post(backendUrl+'/api/user/admin',{email,password})
+if(res.data.success) {
+    setToken(res.data.token)
+} else {
+    toast.error(res.data.message)   
+}
 
 } catch (error) {
-    
+    toast.error("Something went wrong")
 }
     }
   return (
