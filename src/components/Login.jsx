@@ -15,6 +15,7 @@ if(res.data.success) {
     toast.error(res.data.message)   
 }
 
+
 } catch (error) {
     toast.error("Something went wrong")
 }

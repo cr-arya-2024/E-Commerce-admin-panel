@@ -12,7 +12,9 @@ const App = () => {
   const [token,setToken]=useState(localStorage.getItem("token")?localStorage.getItem("token"):"")
 //when u refresh the webpage u would logout so this effect is used to provide the token to the localstorage
 useEffect(()=>{
-  const storedToken = localStorage.setItem("token", token);//when ever the token is generated the token is stored in localstorage
+  if (token) {
+    localStorage.setItem("token", token);//when ever the token is generated the token is stored in localstorage
+  }
 },[token])
   return (
     <div className='bg-grey-50 min-h-screen'>
